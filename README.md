@@ -1,7 +1,7 @@
 ## PAIRADISE: Paired analysis of Allelic Differential Isoform Expression
 
 ### Requirements
-1. Install R version ?? or higher.
+1. Install R version 3.2.1 or higher.
 2. Install the "PAIRADISE" package from within R, e.g. run ```install.packages("PAIRADISE")```.
 
 ### Installation
