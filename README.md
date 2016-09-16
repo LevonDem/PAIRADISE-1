@@ -1,4 +1,4 @@
-## PAIRADISE: Paired Analysis of Differential Isoform Expression
+## PAIRADISE: Paired analysis of Allelic Differential Isoform Expression
 
 ### Requirements
 1. Install R version ?? or higher.
