@@ -34,4 +34,21 @@ my.data[,7] <- c(1,1,1)
 ## Store results
 results <- pairadise(my.data)
 ```
-
+Output:
+1. The function "pairadise" returns a list containing the following entries:
+2. sig.results.Bonferroni: Matrix containing the significant exons (after Bonferroni correction at sig.level), their p-values, and test-statistics.
+3. sig.results.FDR: Matrix containing the significant exons (after FDR correction using BH at sig.level), their p-values, and test-statistics.
+4. testStats: Vector of test statistics for paired analysis.
+5. raw.pvalues: Vector of pvalues for each exon/event.
+6. param.unconstrained: List of parameter estimates for unconstrained model.
+7. param.constrained: List of parameter estimates for constrained model.
+8. latent.u: List of parameter estimates of latent variables for unconstrained model.
+9. latent.c: List of parameter estimates of latent variables for constrained model.
+10. nReplicates: Vector containing the number of valid replicates for each exon in my.data.
+11. totalIter: Vector containing total number of iterations required for optimization algorithm.
+12. exonID: Character vector containing exonIDs .
+13. nExon: Total number of valid exons in my.data.
+14. I1: List containing all exon inclusion counts for group 1.
+15. S1: List containing all exon skipping counts for group 1.
+16. I2: List containing all exon inclusion counts for group 2.
+17. S2: List containing all exon skipping counts for group 2.
