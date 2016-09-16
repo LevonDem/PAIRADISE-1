@@ -34,6 +34,7 @@ my.data[,7] <- c(1,1,1)
 ## Store results
 results <- pairadise(my.data)
 ```
+
 Output:
 The function "pairadise" returns a list containing the following entries:
 1. sig.results.Bonferroni: Matrix containing the significant exons (after Bonferroni correction at sig.level), their p-values, and test-statistics.
@@ -53,3 +54,5 @@ The function "pairadise" returns a list containing the following entries:
 15. I2: List containing all exon inclusion counts for group 2.
 16. S2: List containing all exon skipping counts for group 2.
 
+1. This is a list.
+2. This is a list
