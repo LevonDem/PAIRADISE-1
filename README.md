@@ -8,15 +8,16 @@
 The source code can directly be called from R.
 
 ### Usage:
-Examples of code usage
 ``` pairadise(my.data) ```
-The input format for the dataframe "my.data" is described in the Example section
+
+The input format for the dataframe "my.data" is described below in the Examples section.
 
 ### Examples:
 The input format for the dataframe required by PAIRADISE should be in the following format:
+
 Each row of the dataframe corresponds to a different alternative splicing event. The dataframe should have 7 columns, arranged as follows: 
 
-1. Column 1 contains the ID of the exons/events. 
+1. Column 1 contains the ID of the alternative splicing events. 
 2. Column 2 contains counts of isoform 1 corresponding to the first group.
 3. Column 3 contains counts of isoform 2 corresponding to the first group.
 4. Column 4 contains counts of isoform 1 corresponding to the second group.
