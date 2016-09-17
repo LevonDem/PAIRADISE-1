@@ -83,6 +83,8 @@ Yi Xing: yxing@ucla.edu
 
 Levon Demirdjian: levondem@ucla.edu
 
+Shihao Shen: shihao@ucla.edu
+
 If you found a bug or mistake in this project, we would like to know about it. Before you send us the bug report though, please check the following:
 
 1. Are you using the latest version? The bug you found may already have been fixed.
