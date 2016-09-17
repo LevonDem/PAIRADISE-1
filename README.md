@@ -34,7 +34,7 @@ my.data[,7] <- c(1,1,1)
 results <- pairadise(my.data)
 ```
 
-The input format for the dataframe required by PAIRADISE should be in the following format:
+The input format for the dataframe required by PAIRADISE should be as follows:
 
 Each row of the dataframe corresponds to a different alternative splicing event. The dataframe should have 7 columns, arranged as follows: 
 
