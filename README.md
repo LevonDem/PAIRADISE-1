@@ -14,14 +14,14 @@ The input format for the dataframe "my.data" is described in the Example section
 
 ### Examples:
 The input format for the dataframe required by PAIRADISE should be in the following format:
-Each row of the dataframe corresponds to a different alternative splicing event. The dataframe should have 7 columns, arranged as follows: 
-1. Column 1 contains the ID of the exons/events.
-2. Column 2 contains counts of isoform 1 corresponding to the first group.
-3. Column 3 contains counts of isoform 2 corresponding to the first group.
-4. Column 4 contains counts of isoform 1 corresponding to the second group.
-5. Column 5 contains counts of isoform 2 corresponding to the second group.
-6. Column 6 contains the effective length of isoform 1.
-7. Column 7 contains the effective length of isoform 2.
+Each row of the dataframe corresponds to a different alternative splicing event. The dataframe should have 7 columns, arranged as follows: j
+1. Column 1 contains the ID of the exons/events. &nbsp;
+2. Column 2 contains counts of isoform 1 corresponding to the first group.&nbsp;
+3. Column 3 contains counts of isoform 2 corresponding to the first group.&nbsp;
+4. Column 4 contains counts of isoform 1 corresponding to the second group.&nbsp;
+5. Column 5 contains counts of isoform 2 corresponding to the second group.&nbsp;
+6. Column 6 contains the effective length of isoform 1.&nbsp;
+7. Column 7 contains the effective length of isoform 2.&nbsp;
 Replicates in columns 2-5 should be separated by commas, e.g. 1623,432,6 for three replicates and the replicate order should be consistent for each column to ensure pairs are matched correctly. 
 
 Example:
