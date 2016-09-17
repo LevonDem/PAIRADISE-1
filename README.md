@@ -23,7 +23,7 @@ Each row of the dataframe corresponds to a different alternative splicing event.
 5. Column 5 contains counts of isoform 2 corresponding to the second group.
 6. Column 6 contains the effective length of isoform 1.
 7. Column 7 contains the effective length of isoform 2.
-8. 
+
 Replicates in columns 2-5 should be separated by commas, e.g. 1623,432,6 for three replicates and the replicate order should be consistent for each column to ensure pairs are matched correctly. 
 
 Example:
