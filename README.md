@@ -14,7 +14,8 @@ The input format for the dataframe "my.data" is described in the Example section
 
 ### Examples:
 The input format for the dataframe required by PAIRADISE should be in the following format:
-Each row of the dataframe corresponds to a different alternative splicing event. The dataframe should have 7 columns, arranged as follows: j
+Each row of the dataframe corresponds to a different alternative splicing event. The dataframe should have 7 columns, arranged as follows: 
+
 1. Column 1 contains the ID of the exons/events. &nbsp;
 2. Column 2 contains counts of isoform 1 corresponding to the first group.&nbsp;
 3. Column 3 contains counts of isoform 2 corresponding to the first group.&nbsp;
