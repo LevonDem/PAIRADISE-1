@@ -13,6 +13,27 @@ The source code can directly be called from R.
 The input format for the dataframe "my.data" is described below in the Examples section.
 
 ### Examples:
+
+Run the following example to test if PAIRADISE is working properly:
+```
+set.seed(12345)
+nEvents <- 3  # number of alternative splicing events
+
+## Organize data into the data frame my.data following the proper formatting:
+eventID <- paste("Event", as.character(seq(1:nEvents)))
+my.data <- data.frame(matrix(nrow = nEvents, ncol = 7))
+my.data[,1] <- eventID
+my.data[,2] <- c("12,3,5", "2,9,10,6,5,4", "15,17000,20,100")
+my.data[,3] <- c("0,1,2", "0,0,4,0,3,2", "2,12,1,1")
+my.data[,4] <- c("2,4,5", "12,13,7,7,7,8", "1,6,7,10")
+my.data[,5] <- c("0,1,3", "0,0,0,4,3,1", "274,NA,320,5650")
+my.data[,6] <- c(3,3,3)
+my.data[,7] <- c(1,1,1)
+
+## Store results
+results <- pairadise(my.data)
+```
+
 The input format for the dataframe required by PAIRADISE should be in the following format:
 
 Each row of the dataframe corresponds to a different alternative splicing event. The dataframe should have 7 columns, arranged as follows: 
@@ -35,25 +56,6 @@ Other (optional) inputs to pairadise include:
 4. tol: Specifies the tolerance level for terminating the optimization algorithm, defined as the difference in log-likelihood ratios between iterations. Default is tol = 10^(-2).
 5. pseudocount: Specifies a value for a pseudocount added to each count (e.g. values in columns 2-5 of the input dataframe) at the beginning of the analysis. Default is pseudocount = 0.
 
-Example:
-```
-set.seed(12345)
-nEvents <- 3  # number of alternative splicing events
-
-## Organize data into the data frame my.data following the proper formatting:
-eventID <- paste("Event", as.character(seq(1:nEvents)))
-my.data <- data.frame(matrix(nrow = nEvents, ncol = 7))
-my.data[,1] <- eventID
-my.data[,2] <- c("12,3,5", "2,9,10,6,5,4", "15,17000,20,100")
-my.data[,3] <- c("0,1,2", "0,0,4,0,3,2", "2,12,1,1")
-my.data[,4] <- c("2,4,5", "12,13,7,7,7,8", "1,6,7,10")
-my.data[,5] <- c("0,1,3", "0,0,0,4,3,1", "274,NA,320,5650")
-my.data[,6] <- c(3,3,3)
-my.data[,7] <- c(1,1,1)
-
-## Store results
-results <- pairadise(my.data)
-```
 
 Output:
 The function "pairadise" returns a list containing the following entries:
