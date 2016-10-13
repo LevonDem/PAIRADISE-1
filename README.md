@@ -77,6 +77,82 @@ The function "pairadise" returns a list containing the following entries:
 15. I2: List containing all exon inclusion counts for group 2.
 16. S2: List containing all exon skipping counts for group 2.
 
+## Allele Specific Alternative Splicing (ASAS) Detection Pipeline 
+
+### Dependencies & Required Installations:
+Python 2.6 or higher <br>
+rPGA 2.0 (STAR-dependent) <br>
+PAIRADISE <br>
+
+### Required Scripts (Can be downloaded from ASASDetectPipeline.tar.gz)
+processGTF.SAMs.py, id2gene.py, count.py, FDR.py
+
+### STEP I. Mapping & Preparing ASAS Counts
+Memory Requirement: Generally, this step including using STAR and finer parsing of BAM files, so users are recommended to allocate memory sufficiently. (eg. 35 GB will suffice to run a sample like ENCSR000AED)
+
+Generating the Personal Genome plus Index (hap1 and hap2)
+```
+rPGA personalize -o /path/to/personal/genome/ -v /path/to/VCF/directory -r /path/to/reference/genome/XXX.fa --rnaedit -e /path/to/known/RNA/editing/sites/XXX.txt —-gz
+```
+Mapping to hap1 and hap2 using STAR, and assign haplotype specific reads.
+```
+OUTPUT_BAM=/path/to/store/BAM/files
+mkdir $OUTPUT_BAM
+rPGA mapping -o OUTPUT_BAM -s INPUT1.fq,INPUT2.fq -N 6 --hap -g /path/to/genome/annotation/XXX.gtf --gz --readlength 75 --genomedir /path/to/personal/genome/HAP1/STARindex,/path/to/personal/genome/HAP2/STARindex
+rPGA assign -o SAMPLE_BAM -v /path/to/VCF/directory -e /path/to/known/RNA/editing/sites/XXX.txt --rnaedit --gz
+# OR to run in parallel, one can create a file eg. chroms.txt, which is a list of chromosomes, one chromosome per line (1-22,X), then submit a job array:  
+export chrom=`sed -n ${SGE_TASK_ID}p chroms.txt`
+rPGA assign -o $1 -v /path/to/VCF/directory/${chrom}.vcf.gz -e /path/to/known/RNA/editing/sites/XXX.txt --rnaedit --gz --nomerge
+# Note:If you go this chromsome separated way, for each haplotype, remember to merge separated BAM files back to one file and sorted for next step use.
+```
+Generating AS Events
+```
+python /path/to/rMATs/processGTF.SAMs.py /path/to/genome/annotation/XXX.gtf Output_Prefix /path/to/store/BAM/files/Sample1/hap1.sorted.bam,/path/to/store/BAM/files/Sample1/hap2.sorted.bam,/path/to/store/BAM/files/Sample2/hap1.sorted.bam,/path/to/store/BAM/files/Sample2/hap2.sorted.bam fr-unstranded temp
+# Note: Make sure to include all pairs of haplotype of interested samples in when generating AS Events list.
+```
+Generating ASAS Counts file
+```
+# samples.txt is a list of sample paths, one sample per line
+ASASCounts=/path/to/ASASCounts/results
+mkdir $ASASCounts
+rPGA splicing --merge --pos2id --samples samples.txt -o ASASCounts -v /path/to/VCF/directory
+```
+### STEP II. Run PAIRADISE
+Memory requirement: Less than 1 GB. <br>
+Following commands are using Skipped Exon (SE) Events as an example. <br>
+```
+/path/to/R CMD BATCH run_PAIRADISE_SE.unfilter.R 
+```
+### An example R.script of run_PAIRADISE_SE.unfilter.R:
+```
+library('PAIRADISE')
+my.data=read.table('ASASCounts/ASAS.SNP.SE.JunctionReadsOnly.byPair.unfiltered.txt',colClasses = "character",skip=1)
+results <- pairadise_fast(my.data, numCluster = 1)
+write.table(cbind(results$exonID,results$raw.pvalues),file=‘PAIRADISE_SE.output’)
+```
+### STEP III. Filtering for Significant ASAS Events
+Memory Requirment: Less than 2 GB. <br>
+Following commands are using Skipped Exon (SE) Events as an example. <br>
+
+Making directories 
+```
+mkdir pairadise_result pairadise_result_raw pairadise_results_totalcount pairadise_results_totalcount10_diff5 pairadise_results_totalcount10_diff5_FDR pairadise_results_totalcount10_diff5_FDR10
+mv PAIRADISE_SE.output pairadise_result_raw/.
+```
+Formatting and calculating counts
+```
+python id2gene.py ASASCounts/ASAS.SNP.SE.JunctionReadsOnly.byPair.unfiltered.txt pairadise_result_raw/PAIRADISE_SE.output pairadise_result/SE_allexons.txt 0 1 '[^ "\n]+' 3
+python count.py pairadise_result/SE_allexons.txt pairadise_results_totalcount/SE_allexons_count.txt
+```
+Filtering extreme counts and PSI values (Counts >=10 and PSI in range [0.05,0.95])
+```
+awk '($14>=10) && ($15>=10) && ((($11<=0.95) || ($12<= 0.95)) && (($11>= 0.05) || ($12>= 0.05)))' pairadise_results_totalcount/SE_allexons_count.txt >pairadise_results_totalcount10_diff5/SE_allexons_count.txt
+```
+FDR calculation and filtration (Based on FDR 10%)
+```
+python FDR.py pairadise_results_totalcount1_diff5/SE_allexons_count.txt pairadise_results_totalcount1_diff5_FDR/SE_allexons_count.txt
+awk '($16<=0.1)' pairadise_results_totalcount10_diff5_FDR/SE_allexons_count.txt >pairadise_results_totalcount10_diff5_FDR10/SE_allexons_count.txt
+```
 
 ### Contacts and bug reports:
 Yi Xing: yxing@ucla.edu
