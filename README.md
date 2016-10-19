@@ -88,21 +88,21 @@ PAIRADISE <br>
 processGTF.SAMs.py, id2gene.py, count.py, FDR.py
 
 ### STEP I. Mapping & Preparing ASAS Counts
-Memory Requirement: Generally, this step including using STAR and finer parsing of BAM files, so users are recommended to allocate memory sufficiently. (eg. 35 GB will suffice to run a sample like ENCSR000AED)
+Memory Requirement: Generally, this step includes using STAR and finer parsing of BAM files, so users are recommended to allocate memory sufficiently. (eg. for a sample like ENCSR000AED, 35 GB will suffice to run mapping and assigning reads, 15 GB will be fine for generating and merging ASAS counts )
 
 Generating the Personal Genome plus Index (hap1 and hap2)
 ```
 rPGA personalize -o /path/to/personal/genome/ -v /path/to/VCF/directory -r /path/to/reference/genome/XXX.fa --rnaedit -e /path/to/known/RNA/editing/sites/XXX.txt —-gz
 ```
-Mapping to hap1 and hap2 using STAR, and assign haplotype specific reads.
+Mapping to hap1 and hap2 using STAR, and assigning haplotype specific reads.
 ```
 OUTPUT_BAM=/path/to/store/BAM/files
 mkdir $OUTPUT_BAM
-rPGA mapping -o OUTPUT_BAM -s INPUT1.fq,INPUT2.fq -N 6 --hap -g /path/to/genome/annotation/XXX.gtf --gz --readlength 75 --genomedir /path/to/personal/genome/HAP1/STARindex,/path/to/personal/genome/HAP2/STARindex
-rPGA assign -o SAMPLE_BAM -v /path/to/VCF/directory -e /path/to/known/RNA/editing/sites/XXX.txt --rnaedit --gz
-# OR to run in parallel, one can create a file eg. chroms.txt, which is a list of chromosomes, one chromosome per line (1-22,X), then submit a job array:  
+rPGA mapping -o $OUTPUT_BAM -s INPUT1.fq,INPUT2.fq -N 6 --hap -g /path/to/genome/annotation/XXX.gtf --gz --readlength READ_LENGTH --genomedir /path/to/personal/genome/HAP1/STARindex,/path/to/personal/genome/HAP2/STARindex
+rPGA assign -o $OUTPUT_BAM -v /path/to/VCF/directory -e /path/to/known/RNA/editing/sites/XXX.txt --rnaedit --gz
+# OR, in order to run in parallel, one can create a file eg. chroms.txt, which is a list of chromosomes, one chromosome per line (1-22,X), then submit a job array:  
 export chrom=`sed -n ${SGE_TASK_ID}p chroms.txt`
-rPGA assign -o $1 -v /path/to/VCF/directory/${chrom}.vcf.gz -e /path/to/known/RNA/editing/sites/XXX.txt --rnaedit --gz --nomerge
+rPGA assign -o $OUTPUT_BAM -v /path/to/VCF/directory/${chrom}.vcf.gz -e /path/to/known/RNA/editing/sites/XXX.txt --rnaedit --gz --nomerge
 # Note:If you go this chromsome separated way, for each haplotype, remember to merge separated BAM files back to one file and sorted for next step use.
 ```
 Generating AS Events
@@ -112,7 +112,11 @@ python /path/to/rMATs/processGTF.SAMs.py /path/to/genome/annotation/XXX.gtf Outp
 ```
 Generating ASAS Counts file
 ```
-# samples.txt is a list of sample paths, one sample per line
+# samples.txt is a list of paths to reads-reassigned BAM file ($OUTPUT_BAM in first step), one path per line
+# Then start a job array like following:
+export s=`sed -n ${SGE_TASK_ID}p samples.txt`
+rPGA splicing -o ${s} --asdir ASEvents --readlength READ_LENGTH --anchorlength ANCHOR_LENGTH # We used --readlength 100 --anchorlength 8 for ENCSR000AED
+# Merge ASAS counts of all samples to one:
 ASASCounts=/path/to/ASASCounts/results
 mkdir $ASASCounts
 rPGA splicing --merge --pos2id --samples samples.txt -o ASASCounts -v /path/to/VCF/directory
@@ -123,7 +127,7 @@ Following commands are using Skipped Exon (SE) Events as an example. <br>
 ```
 /path/to/R CMD BATCH run_PAIRADISE_SE.unfilter.R 
 ```
-### An example R.script of run_PAIRADISE_SE.unfilter.R:
+An example R.script of run_PAIRADISE_SE.unfilter.R:
 ```
 library('PAIRADISE')
 my.data=read.table('ASASCounts/ASAS.SNP.SE.JunctionReadsOnly.byPair.unfiltered.txt',colClasses = "character",skip=1)
