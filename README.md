@@ -128,7 +128,8 @@ mkdir -p temp
 ASEvents=/path/to/ASevents/outputs
 mkdir $ASEvents
 python /path/to/rMATs/processGTF.SAMs.py /path/to/genome/annotation/XXX.gtf \
-${ASEvents}/fromGTF \ /path/to/store/BAM/files/Sample1/hap1.sorted.bam,/path/to/store/BAM/files/Sample1/hap2.sorted.bam,/path/to/store/BAM/files/Sample2/hap1.sorted.bam,/path/to/store/BAM/files/Sample2/hap2.sorted.bam \
+${ASEvents}/fromGTF \
+/path/to/store/BAM/files/Sample1/hap1.sorted.bam,/path/to/store/BAM/files/Sample1/hap2.sorted.bam,/path/to/store/BAM/files/Sample2/hap1.sorted.bam,/path/to/store/BAM/files/Sample2/hap2.sorted.bam \
 fr-unstranded \
 temp
 
