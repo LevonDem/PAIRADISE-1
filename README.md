@@ -90,7 +90,7 @@ processGTF.SAMs.py, id2gene.py, count.py, FDR.py
 ### STEP I. Mapping & Preparing ASAS Counts
 Memory Requirement: Generally, this step includes using STAR and finer parsing of BAM files, so users are recommended to allocate memory sufficiently. (eg. for a sample like ENCSR000AED, 35 GB will suffice to run mapping and assigning reads, 15 GB will be fine for generating and merging ASAS counts )
 
-Generating the Personal Genome (hap1.fa and hap2.fa), followed by STAR indexing(please put STAR index files under the same directory with new folder HAP1 HAP2)   
+Generating the Personal Genome (hap1.fa and hap2.fa), followed by STAR indexing (please put STAR index files under the same directory with new folders 'HAP1', 'HAP2')   
 ```
 rPGA personalize -o /path/to/personal/genome/ -v /path/to/VCF/directory \
 -r /path/to/reference/genome/XXX.fa \
@@ -124,12 +124,17 @@ rPGA assign -o $OUTPUT_BAM -v /path/to/VCF/directory/${chrom}.vcf.gz \
 ```
 Generating AS Events
 ```
+mkdir -p temp
+ASEvents=/path/to/ASevents/outputs
+mkdir $ASEvents
 python /path/to/rMATs/processGTF.SAMs.py /path/to/genome/annotation/XXX.gtf \
-Output_Prefix /path/to/store/BAM/files/Sample1/hap1.sorted.bam,/path/to/store/BAM/files/Sample1/hap2.sorted.bam,/path/to/store/BAM/files/Sample2/hap1.sorted.bam,/path/to/store/BAM/files/Sample2/hap2.sorted.bam \
-fr-unstranded temp
+${ASEvents}/fromGTF \ /path/to/store/BAM/files/Sample1/hap1.sorted.bam,/path/to/store/BAM/files/Sample1/hap2.sorted.bam,/path/to/store/BAM/files/Sample2/hap1.sorted.bam,/path/to/store/BAM/files/Sample2/hap2.sorted.bam \
+fr-unstranded \
+temp
 
 # Note: Make sure to include all pairs of haplotype BAMs of interest when generating AS Events
 # list.
+# Note: 'temp' folder is required for processGTF.SAMs.py
 ```
 Generating ASAS Counts file
 ```
@@ -139,7 +144,7 @@ Generating ASAS Counts file
 
 export s=`sed -n ${SGE_TASK_ID}p samples.txt`
 
-rPGA splicing -o ${s} --asdir ASEvents --readlength READ_LENGTH --anchorlength ANCHOR_LENGTH 
+rPGA splicing -o ${s} --asdir $ASEvents --readlength READ_LENGTH --anchorlength ANCHOR_LENGTH 
 # We used --readlength 100 --anchorlength 8 for ENCSR000AED
 
 # Merge ASAS counts of all samples to one:
