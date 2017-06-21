@@ -156,7 +156,7 @@ Following commands are using Skipped Exon (SE) Events as an example. <br>
 An example R.script of run_PAIRADISE_SE.unfilter.R:
 ```
 library('PAIRADISE')
-my.data=read.table('ASASCounts/ASAS.SNP.SE.JunctionReadsOnly.byPair.unfiltered.txt',skip=1)
+my.data <- read.table('ASASCounts/ASAS.SNP.SE.JunctionReadsOnly.byPair.unfiltered.txt',skip=1)
 results <- pairadise(my.data, numCluster = 1)
 write.table(cbind(results$exonID,results$raw.pvalues),file=‘PAIRADISE_SE.output’)
 ```
