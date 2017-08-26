@@ -31,7 +31,7 @@ my.data[,6] <- c(3,3,3)
 my.data[,7] <- c(1,1,1)
 
 ## Store results
-results <- pairadise(my.data)
+results <- pairadise(my.data, equal.variance = FALSE)
 ```
 
 The input format for the dataframe required by PAIRADISE should be as follows:
@@ -46,7 +46,7 @@ Each row of the dataframe corresponds to a different alternative splicing event.
 6. Column 6 contains the effective length of isoform 1.
 7. Column 7 contains the effective length of isoform 2.
 
-Replicates in columns 2-5 should be separated by commas, e.g. 1623,432,6 for three replicates and the replicate order should be consistent for each column to ensure pairs are matched correctly. 
+Replicates in columns 2-5 should be separated by commas, e.g. "1623,432,6" for three replicates and the replicate order should be consistent for each column to ensure pairs are matched correctly. 
 
 Other (optional) inputs to pairadise include:
 
@@ -55,6 +55,7 @@ Other (optional) inputs to pairadise include:
 3. nIter: The maximum number of iterations of the optimization algorithm allowed. Default is nIter = 100.
 4. tol: Specifies the tolerance level for terminating the optimization algorithm, defined as the difference in log-likelihood ratios between iterations. Default is tol = 10^(-2).
 5. pseudocount: Specifies a value for a pseudocount added to each count (e.g. values in columns 2-5 of the input dataframe) at the beginning of the analysis. Default is pseudocount = 0.
+6. equal.variance: Are the group variances assumed equal? Takes value "TRUE" or "FALSE".
 
 
 Output:
