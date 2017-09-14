@@ -86,114 +86,126 @@ rPGA 2.0 (STAR-dependent) <br>
 PAIRADISE <br>
 
 ### Required Scripts (Can be downloaded from ASASDetectPipeline.tar.gz)
-processGTF.SAMs.py, id2gene.py, count.py, FDR.py
+processGTF.SAMs.py, id2gene.py, count.py, FDR.py, PAIRADISE_fast.R, run.PAIRADISE_with_filter.sh
+
+### Toy Example
+https://drive.google.com/drive/folders/0B6Gm87MT7rC5U1dDRlVNMUluVzA?usp=sharing
 
 ### STEP I. Mapping & Preparing ASAS Counts
-Memory Requirement: Generally, this step includes using STAR and finer parsing of BAM files, so users are recommended to allocate memory sufficiently. (eg. for a sample like ENCSR000AED, 35 GB will suffice to run mapping and assigning reads, 15 GB will be fine for generating and merging ASAS counts )
+Memory Requirement: This step includes STA alignments and parsing aligned BAM files, therefore, it is recommended to allocate memory sufficiently. eg. for a sample like ENCSR000AED, 35 GB will suffice to run mapping and assigning reads, 15 GB will suffice for producing ASAS counts.
 
-Generating the Personal Genome (hap1.fa and hap2.fa), followed by STAR indexing(please put STAR index files under the same directory with new folder HAP1 HAP2)   
+1.1 Generating the Personal Genome (hap1.fa and hap2.fa), followed by STAR indexing(please put STAR index files under the same directory with new folder HAP1 HAP2)   
 ```
-rPGA personalize -o /path/to/personal/genome/ -v /path/to/VCF/directory \
--r /path/to/reference/genome/XXX.fa \
---rnaedit -e /path/to/known/RNA/editing/sites/XXX.txt —-gz
+rPGA personalize \
+ -o /path/to/personal/genome/ \
+ -v /path/to/VCF/directory \
+ -r /path/to/reference/genome/XXX.fa \
+ --rnaedit -e /path/to/known/RNA/editing/sites/XXX.txt \
+ --gz
 
-# Note that genome coordinates in VCF files should contain no 'chr'. 
-# For example use '1' instead of 'chr1'. Any questions see rPGA github page.
+# Note that genome coordinates in VCF files should contain no 'chr'. For example use '1' instead of 'chr1'.
+# User can also refer rPGA github page.
 ```
-Mapping to hap1 and hap2 using STAR, and assigning haplotype specific reads.
+1.2 Mapping to hap1 and hap2 using STAR, and assigning haplotype specific reads.
 ```
 OUTPUT_BAM=/path/to/store/BAM/files
-
 mkdir $OUTPUT_BAM
 
-rPGA mapping -o $OUTPUT_BAM -s INPUT1.fq,INPUT2.fq -N 6 --hap \
--g /path/to/genome/annotation/XXX.gtf --gz --readlength READ_LENGTH \
---genomedir /path/to/personal/genome/HAP1/STARindex,/path/to/personal/genome/HAP2/STARindex
+rPGA mapping \
+ -o $OUTPUT_BAM \
+ -s INPUT1.fq,INPUT2.fq \
+ -N 6 \
+ --hap \
+ -g /path/to/genome/annotation/XXX.gtf \
+ --gz \
+ --readlength READ_LENGTH \
+ --genomedir /path/to/personal/genome/HAP1/STARindex,/path/to/personal/genome/HAP2/STARindex
 
-rPGA assign -o $OUTPUT_BAM -v /path/to/VCF/directory -e /path/to/known/RNA/editing/sites/XXX.txt --rnaedit --gz
-
-# OR, in order to run in parallel, one can create a file eg. chroms.txt, which is a list of
-# chromosomes, one chromosome per line (1-22,X), then submit a job array:   
+rPGA assign \
+ -o $OUTPUT_BAM \
+ -v /path/to/VCF/directory \
+ -e /path/to/known/RNA/editing/sites/XXX.txt \
+ --rnaedit \
+ --gz
+```
+[optional] Alternaively, this assign command can also run by each chromosome and merge them later to speed up. For example, one can create a file. eg. chroms.txt containing one chromosome per line; then run in parallel or submit a job array in SGE system.
+```
+# eg. 
 export chrom=`sed -n ${SGE_TASK_ID}p chroms.txt`
 
-rPGA assign -o $OUTPUT_BAM -v /path/to/VCF/directory/${chrom}.vcf.gz \
--e /path/to/known/RNA/editing/sites/XXX.txt --rnaedit --gz --nomerge
+rPGA assign \
+-o $OUTPUT_BAM \
+-v /path/to/VCF/directory/${chrom}.vcf.gz \
+-e /path/to/known/RNA/editing/sites/XXX.txt \
+--rnaedit \
+--gz \
+--nomerge
 
-# Note:If you go this chromsome separated way, for each haplotype, 
-# remember to merge separated BAM files back to one file and sorted for next step use.
+# Note: Remember to merge separated BAM files and sort for next step use.
 
 ```
-Generating AS Events
+1.3 Generating AS Events
 ```
-python /path/to/rMATs/processGTF.SAMs.py /path/to/genome/annotation/XXX.gtf \
-Output_Prefix /path/to/store/BAM/files/Sample1/hap1.sorted.bam,/path/to/store/BAM/files/Sample1/hap2.sorted.bam,/path/to/store/BAM/files/Sample2/hap1.sorted.bam,/path/to/store/BAM/files/Sample2/hap2.sorted.bam \
-fr-unstranded temp
-
-# Note: Make sure to include all pairs of haplotype BAMs of interest when generating AS Events
-# list.
+python /path/to/rMATs/processGTF.SAMs.py \
+ /path/to/genome/annotation/XXX.gtf \
+ Output_Prefix \
+ /path/to/store/BAM/files/Sample1/hap1.sorted.bam,/path/to/store/BAM/files/Sample1/hap2.sorted.bam,/path/to/store/BAM/files/Sample2/hap1.sorted.bam,/path/to/store/BAM/files/Sample2/hap2.sorted.bam \
+ fr-unstranded \
+ temp
+ 
 ```
-Generating ASAS Counts file
+1.4 Generating ASAS Counts file
 ```
-# samples.txt is a list of paths to reads-reassigned BAM file ($OUTPUT_BAM in first step), one path
-# per line.  
+# samples.txt is a list of paths to reads-reassigned BAM file ($OUTPUT_BAM in first step), one path per line.  
 # Then start a job array like following:
 
 export s=`sed -n ${SGE_TASK_ID}p samples.txt`
 
-rPGA splicing -o ${s} --asdir ASEvents --readlength READ_LENGTH --anchorlength ANCHOR_LENGTH 
+rPGA splicing \
+ -o ${s} \
+ --asdir ASEvents \
+ --readlength READ_LENGTH \
+ --anchorlength ANCHOR_LENGTH 
 # We used --readlength 100 --anchorlength 8 for ENCSR000AED
 
 # Merge ASAS counts of all samples to one:
 ASASCounts=/path/to/ASASCounts/results
 mkdir $ASASCounts
-rPGA splicing --merge --pos2id --samples samples.txt -o ASASCounts -v /path/to/VCF/directory
+rPGA splicing \
+ --merge \
+ --pos2id \
+ --samples samples.txt \
+ -o ASASCounts \
+ -v /path/to/VCF/directory
 ```
 ### STEP II. Run PAIRADISE
 Memory requirement: Less than 1 GB. <br>
-Following commands are using Skipped Exon (SE) Events as an example. <br>
+Below is an example R code to run PAIRADISE. <br>
+For a ready-to-use script, see 'PAIRADISE_fast.R' in ASASDetectPipeline.tar.gz. <br>
+Note that we provided 'run.PAIRADISE_with_filter.sh' to perform both PAIRADISE and the post filtering steps in one single command. <br> 
 ```
-/path/to/R CMD BATCH run_PAIRADISE_SE.unfilter.R 
-```
-An example R.script of run_PAIRADISE_SE.unfilter.R:
-```
+args<-commandArgs(TRUE)
 library('PAIRADISE')
-my.data <- read.table('ASASCounts/ASAS.SNP.SE.JunctionReadsOnly.byPair.unfiltered.txt',skip=1)
-results <- pairadise(my.data, numCluster = 1)
-write.table(cbind(results$exonID,results$raw.pvalues),file=‘PAIRADISE_SE.output’)
+my.data=read.table(args[1],header = TRUE,colClasses = c(rep("character", 5), rep("numeric", 2)))
+results <- pairadise(my.data, numCluster = 8, equal.variance = F)
+write.table(cbind(results$exonID,results$raw.pvalues),file=paste0(args[1],'.pairadise_out.txt'))
 ```
+
 ### STEP III. Filtering for Significant ASAS Events
 Memory Requirment: Less than 2 GB. <br>
-Following commands are using Skipped Exon (SE) Events as an example. <br>
+Below are steps to further refining PAIRADISE raw test result for your analysis. <br>
 
-Making directories 
-```
-mkdir pairadise_result pairadise_result_raw pairadise_results_totalcount \
-pairadise_results_totalcount10_diff5 pairadise_results_totalcount10_diff5_FDR \
-pairadise_results_totalcount10_diff5_FDR10
+1. Filtering low coverage events (Counts >=10)
+2. Filtering small PSI values (abs(delta PSI) larger than 0.05)
+3. FDR calculation and filtration (Based on FDR 10%)
 
-mv PAIRADISE_SE.output pairadise_result_raw/.
+We provided a simple script 'run.PAIRADISE_with_filter.sh' to perform both PAIRADISE and the post filtering steps. <br>
 ```
-Formatting and calculating counts
+bash run.PAIRADISE_with_filter.sh script_location ASASCountDir AS_type
 ```
-python id2gene.py ASASCounts/ASAS.SNP.SE.JunctionReadsOnly.byPair.unfiltered.txt \
-pairadise_result_raw/PAIRADISE_SE.output pairadise_result/SE_allexons.txt 0 1 '[^ "\n]+' 3
+Details please see ASASDetectPipeline.tar.gz. <br>
 
-python count.py pairadise_result/SE_allexons.txt pairadise_results_totalcount/SE_allexons_count.txt
-```
-Filtering extreme counts and PSI values (Counts >=10 and delta PSI value in range [0.05,0.95])
-```
-awk '($14>=10) && ($15>=10) && ((($11<=0.95) || ($12<= 0.95)) && (($11>= 0.05) || ($12>= 0.05)))' \
-pairadise_results_totalcount/SE_allexons_count.txt > \
-pairadise_results_totalcount10_diff5/SE_allexons_count.txt
-```
-FDR calculation and filtration (Based on FDR 10%)
-```
-python FDR.py pairadise_results_totalcount1_diff5/SE_allexons_count.txt \
-pairadise_results_totalcount1_diff5_FDR/SE_allexons_count.txt
 
-awk '($16<=0.1)' pairadise_results_totalcount10_diff5_FDR/SE_allexons_count.txt > \
-pairadise_results_totalcount10_diff5_FDR10/SE_allexons_count.txt
-```
 
 ### Contacts and bug reports:
 Yi Xing: yxing@ucla.edu
