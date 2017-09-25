@@ -10,26 +10,6 @@ The source code can directly be called from R.
 ### Usage:
 ``` pairadise(my.data, numCluster, sig.level, nIter, tol, pseudocount, equal.variance) ```
 
-The input format for the dataframe "my.data" is described below in the Examples section.
-
-### Examples:
-
-Run the following example to test if PAIRADISE is working properly:
-```
-## Load the PAIRADISE package
-library(PAIRADISE)
-
-## Load and save sample dataset
-data("sample_dataset")
-my.data <- sample_dataset
-
-## Look at the raw data
-my.data
-
-## Run PAIRADISE and store results
-results <- pairadise(my.data, equal.variance = FALSE)
-```
-
 The input format for the dataframe required by PAIRADISE should be as follows:
 
 Each row of the dataframe corresponds to a different alternative splicing event. The dataframe should have 7 columns, arranged as follows: 
@@ -46,12 +26,12 @@ Replicates in columns 2-5 should be separated by commas, e.g. "1623,432,6" for t
 
 Other (optional) inputs to pairadise include:
 
-1. numCluster: Number of clusters to use for parallel computing. Default is numCluster = 2.
-2. sig.level: The desired level of statistical significance. Default is sig.level = 0.01.
-3. nIter: The maximum number of iterations of the optimization algorithm allowed. Default is nIter = 100.
-4. tol: Specifies the tolerance level for terminating the optimization algorithm, defined as the difference in log-likelihood ratios between iterations. Default is tol = 10^(-2).
-5. pseudocount: Specifies a value for a pseudocount added to each count (e.g. values in columns 2-5 of the input dataframe) at the beginning of the analysis. Default is pseudocount = 0.
-6. equal.variance: Are the group variances assumed equal? Takes value "TRUE" or "FALSE".
+1. numCluster: Number of clusters to use for parallel computing. Default is ```numCluster = 2```.
+2. sig.level: The desired level of statistical significance. Default is ```sig.level = 0.01```.
+3. nIter: The maximum number of iterations of the optimization algorithm allowed. Default is ```nIter = 100```.
+4. tol: Specifies the tolerance level for terminating the optimization algorithm, defined as the difference in log-likelihood ratios between iterations. Default is ```tol = 10^(-2)```.
+5. pseudocount: Specifies a value for a pseudocount added to each count (e.g. values in columns 2-5 of the input dataframe) at the beginning of the analysis. Default is ```pseudocount = 0```.
+6. equal.variance: Are the group variances assumed equal? Takes value TRUE or FALSE. Default is ```equal.variance = FALSE```.
 
 
 Output:
@@ -73,6 +53,26 @@ The function "pairadise" returns a list containing the following entries:
 14. S1: List containing all exon skipping counts for group 1.
 15. I2: List containing all exon inclusion counts for group 2.
 16. S2: List containing all exon skipping counts for group 2.
+
+### Example:
+
+Run the following example to test if PAIRADISE is working properly:
+```
+## Load the PAIRADISE package
+library(PAIRADISE)
+
+## Load and save sample dataset
+data("sample_dataset")
+my.data <- sample_dataset
+
+## Look at the raw data
+my.data
+
+## Run PAIRADISE and store results
+results <- pairadise(my.data, equal.variance = FALSE)
+```
+
+
 
 ## Allele Specific Alternative Splicing (ASAS) Detection Pipeline 
 
