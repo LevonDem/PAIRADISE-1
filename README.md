@@ -16,21 +16,15 @@ The input format for the dataframe "my.data" is described below in the Examples 
 
 Run the following example to test if PAIRADISE is working properly:
 ```
-set.seed(12345)
-nEvents <- 3  # number of alternative splicing events
 
-## Organize data into the data frame my.data following the proper formatting:
-eventID <- paste("Event", as.character(seq(1:nEvents)))
-my.data <- data.frame(matrix(nrow = nEvents, ncol = 7))
-my.data[,1] <- eventID
-my.data[,2] <- c("12,3,5", "2,9,10,6,5,4", "15,17000,20,100")
-my.data[,3] <- c("0,1,2", "0,0,4,0,3,2", "2,12,1,1")
-my.data[,4] <- c("2,4,5", "12,13,7,7,7,8", "1,6,7,10")
-my.data[,5] <- c("0,1,3", "0,0,0,4,3,1", "274,NA,320,5650")
-my.data[,6] <- c(3,3,3)
-my.data[,7] <- c(1,1,1)
+## Load and save sample dataset
+data("sample_dataset")
+my.data <- sample_dataset
 
-## Store results
+## Look at the raw data
+my.data
+
+## Run PAIRADISE and store results
 results <- pairadise(my.data, equal.variance = FALSE)
 ```
 
