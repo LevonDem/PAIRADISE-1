@@ -16,6 +16,9 @@ The input format for the dataframe "my.data" is described below in the Examples 
 
 Run the following example to test if PAIRADISE is working properly:
 ```
+## Load the PAIRADISE package
+library(PAIRADISE)
+
 ## Load and save sample dataset
 data("sample_dataset")
 my.data <- sample_dataset
