@@ -8,7 +8,7 @@
 The source code can directly be called from R.
 
 ### Usage:
-``` pairadise(my.data) ```
+``` pairadise(my.data, numCluster, sig.level, nIter, tol, pseudocount, equal.variance) ```
 
 The input format for the dataframe "my.data" is described below in the Examples section.
 
