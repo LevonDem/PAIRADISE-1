@@ -84,6 +84,9 @@ PAIRADISE <br>
 ### Required Scripts (Can be downloaded from ASASDetectPipeline.tar.gz)
 processGTF.SAMs.py, id2gene.py, count.py, FDR.py, PAIRADISE_fast.R, run.PAIRADISE_with_filter.sh
 
+### Reference and Annotation Bundle (These are files used for the manscript. Feel free to download the latest version by yourself)
+https://drive.google.com/drive/folders/0B6Gm87MT7rC5WE5TMlJyQnlpdGM
+
 ### Toy Example
 https://drive.google.com/drive/folders/0B6Gm87MT7rC5U1dDRlVNMUluVzA?usp=sharing
 
@@ -94,9 +97,9 @@ Memory Requirement: This step includes STA alignments and parsing aligned BAM fi
 ```
 rPGA personalize \
  -o /path/to/personal/genome/ \
- -v /path/to/VCF/directory \
- -r /path/to/reference/genome/XXX.fa \
- --rnaedit -e /path/to/known/RNA/editing/sites/XXX.txt \
+ -v /path/to/VCF/directory \ # eg. 'NA12878' folder in the shared 'Reference Bundle' folder
+ -r /path/to/reference/genome/hg19.fa \ #Can be replaced by users
+ --rnaedit -e /path/to/known/RNA/editing/sites/Human_AG_all_hg19_v2.txt \ #Can be replaced by users
  --gz
 
 # Note that genome coordinates in VCF files should contain no 'chr'. For example use '1' instead of 'chr1'.
@@ -112,15 +115,15 @@ rPGA mapping \
  -s INPUT1.fq,INPUT2.fq \
  -N 6 \
  --hap \
- -g /path/to/genome/annotation/XXX.gtf \
+ -g /path/to/genome/annotation/Homo_sapiens.Ensembl.GRCh37.75.gtf \ #Can be replaced by users
  --gz \
  --readlength READ_LENGTH \
  --genomedir /path/to/personal/genome/HAP1/STARindex,/path/to/personal/genome/HAP2/STARindex
 
 rPGA assign \
  -o $OUTPUT_BAM \
- -v /path/to/VCF/directory \
- -e /path/to/known/RNA/editing/sites/XXX.txt \
+ -v /path/to/VCF/directory \ # eg. 'NA12878' folder in the shared 'Reference Bundle' folder
+ -e /path/to/known/RNA/editing/sites/Human_AG_all_hg19_v2.txt \ #Can be replaced by users
  --rnaedit \
  --gz
 ```
@@ -131,8 +134,8 @@ export chrom=`sed -n ${SGE_TASK_ID}p chroms.txt`
 
 rPGA assign \
 -o $OUTPUT_BAM \
--v /path/to/VCF/directory/${chrom}.vcf.gz \
--e /path/to/known/RNA/editing/sites/XXX.txt \
+-v /path/to/VCF/directory/${chrom}.vcf.gz \ # eg. 'NA12878' folder in the shared 'Reference Bundle' folder
+-e /path/to/known/RNA/editing/sites/Human_AG_all_hg19_v2.txt \ #Can be replaced by users
 --rnaedit \
 --gz \
 --nomerge
@@ -143,7 +146,7 @@ rPGA assign \
 1.3 Generating AS Events
 ```
 python /path/to/rMATs/processGTF.SAMs.py \
- /path/to/genome/annotation/XXX.gtf \
+ /path/to/genome/annotation/Homo_sapiens.Ensembl.GRCh37.75.gtf \ #Can be replaced by users 
  Output_Prefix \
  /path/to/store/BAM/files/Sample1/hap1.sorted.bam,/path/to/store/BAM/files/Sample1/hap2.sorted.bam,/path/to/store/BAM/files/Sample2/hap1.sorted.bam,/path/to/store/BAM/files/Sample2/hap2.sorted.bam \
  fr-unstranded \
@@ -172,7 +175,7 @@ rPGA splicing \
  --pos2id \
  --samples samples.txt \
  -o ASASCounts \
- -v /path/to/VCF/directory
+ -v /path/to/VCF/directory # eg. 'NA12878' folder in the shared 'Reference Bundle' folder
 ```
 ### STEP II. Run PAIRADISE
 Memory requirement: Less than 1 GB. <br>
