@@ -84,9 +84,17 @@ PAIRADISE <br>
 ### Required Scripts (Can be downloaded from ASASDetectPipeline.tar.gz)
 processGTF.SAMs.py, id2gene.py, count.py, FDR.py, PAIRADISE_fast.R, run.PAIRADISE_with_filter.sh
 
-### Reference and Annotation Bundle (These are files used for the manscript. Feel free to download the latest version by yourself)
-https://drive.google.com/drive/folders/0B6Gm87MT7rC5WE5TMlJyQnlpdGM
-
+### Reference and Annotation Bundle
+#### Option 1: Use the same genome reference and annotation used in our manuscript
+https://drive.google.com/drive/folders/0B6Gm87MT7rC5WE5TMlJyQnlpdGM <br>
+What is included: hg19 reference genome, Ensembl GRCh37 v75 gtf file and RADAR known RNA editing sites v2. For our specific analysis, NA12878 VCF files (1KGP phase3) are also included.
+#### Option 2: Use the latest version
+1. Ensembl FTP
+reference genome-> http://ftp.ensembl.org/pub/current_fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+genome annotation -> http://ftp.ensembl.org/pub/current_gtf/homo_sapiens/Homo_sapiens.GRCh38.90.gtf.gz
+2. GATK provides a bundle of reference genome and gtf file <br>
+https://software.broadinstitute.org/gatk/download/bundle
+3. User can also find reference genome from UCSC genome browser and genome annotation from GENCODE 
 ### Toy Example
 https://drive.google.com/drive/folders/0B6Gm87MT7rC5U1dDRlVNMUluVzA?usp=sharing
 
