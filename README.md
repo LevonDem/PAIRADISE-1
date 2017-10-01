@@ -100,13 +100,13 @@ https://software.broadinstitute.org/gatk/download/bundle
 https://drive.google.com/drive/folders/0B6Gm87MT7rC5U1dDRlVNMUluVzA?usp=sharing
 
 ### Pipeline Outline
-STEP I. Mapping & Preparing Allele-Specific AS Counts (using rPGA)-> 
-STEP II. Statistical test (using PAIRADISE) -> 
-STEP III. Result Filtering and FDR Controlling
+STEP I. Mapping & Preparing Allele-Specific AS Counts (using rPGA)-> <br>
+STEP II. Statistical test (using PAIRADISE) -> <br>
+STEP III. Result Filtering and FDR Controlling <br>
 
 #### STEP I. Mapping & Preparing ASAS Counts (mainly use rPGA package)
-Memory Requirement: This step includes reference genome generation, STAR mapping and parsing aligned BAM files, therefore, it is recommended to allocate memory sufficiently. eg. for a sample like ENCSR000AED, 35 GB will suffice to run mapping and assigning reads, 15 GB will suffice for producing ASAS counts.
-Commands: Although each rPGA command is commented in below section, users are feel free to use rPGA -h to look at the manual provided by the package. Additional useage of rPGA please refer to https://github.com/Xinglab/rPGA.
+Memory Requirement: This step includes reference genome generation, STAR mapping and parsing aligned BAM files, therefore, it is recommended to allocate memory sufficiently. eg. for a sample like ENCSR000AED, 35 GB will suffice to run mapping and assigning reads, 15 GB will suffice for producing ASAS counts. <br>
+Commands: Although each rPGA command is commented in below section, users are feel free to use rPGA -h to look at the manual provided by the package. Additional useage of rPGA please refer to https://github.com/Xinglab/rPGA.<br>
 
 1.1 Generating the Personal Genome (hap1.fa and hap2.fa), followed by STAR indexing
 ```
@@ -185,7 +185,7 @@ rPGA splicing \ # a funcion in rPGA to find allele specific splicing and output 
  -v /path/to/VCF/directory # eg. 'NA12878' folder in the 'Reference Bundle'
  # MAIN OUTPUT: Merged ASAS count file, eg. ASASCounts/ASAS.SNP.SE.JunctionReadsOnly.byPair.unfiltered.txt
  # The ourput generated this step can be directly used by PAIRADISE. See STEP II
- # We used 'unfiltered' output as we will do all filter in STEP III.
+ # 'unfiltered' output is used as we will do all filter in STEP III.
 ```
 #### STEP II. Run PAIRADISE
 Memory requirement: Less than 1 GB. <br>
