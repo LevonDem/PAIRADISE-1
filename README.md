@@ -48,8 +48,10 @@ Download and unzip the PAIRADISE test dataset. (Yang, please upload the test dat
 		  -s fastq             FASTQ files of RNA-seq data, multiple individuals separated by comma.
 		  -v VCF               Folders of VCF files, multiple individuals separated by comma.
 		  -o OD                Output folder of post step.
-		  -readLength LENGTH   The length of each read.
-		  -anchorLength LENGTH Anchor length of junction read.		 
+		  -N Number            Max number of read mismatches, default is 3
+		  -M Number            Max number of multiple alignments, default is 20
+		  -readLength LENGTH   The read length.
+		  -anchorLength LENGTH Anchor length of junction read, default is 8.		 
 		  -statoff             Turn statistical analysis off.
 		  -gz                  Use gzipped FASTQ and VCF files.
 
