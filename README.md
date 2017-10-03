@@ -45,7 +45,7 @@ Download and unzip the PAIRADISE test dataset. (Yang, please upload the test dat
 		  -gtf GTF             An annotation of genes and transcripts in GTF format.
 		  -r ref               FASTQ file of reference genome.
 		  -e rnaedit           List of RNA editing sites.
-		  -s fastq                  FASTQ files of RNA-seq data, multiple individuals separated by comma.
+		  -s fastq             FASTQ files of RNA-seq data, multiple individuals separated by comma.
 		  -v VCF               Folders of VCF files, multiple individuals separated by comma.
 		  -o OD                Output folder of post step.
 		  -readLength LENGTH   The length of each read.
