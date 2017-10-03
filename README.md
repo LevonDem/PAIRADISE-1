@@ -126,7 +126,7 @@ The function "pairadise" returns a list containing the following entries:
 15. I2: List containing all exon inclusion counts for group 2.
 16. S2: List containing all exon skipping counts for group 2.
 
-## Example of Using the stand-alone PAIRADISE statistical model in R:
+## Example of Using the Stand-Alone PAIRADISE Statistical Model in R:
 
 Run the following example to test if PAIRADISE is working properly:
 ```
