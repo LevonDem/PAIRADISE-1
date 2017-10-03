@@ -31,7 +31,7 @@ Install the PAIRADISE statistical model in R from local repository:
 Download and unzip the PAIRADISE test dataset. (Yang, please upload the test data files onto our MIMG server. Talk with Zhijie if you are not sure about how to upload.)
 
     tar xvfz GM12878.tar.gz
-    python PAIRADISE.py -o OUTPUT/ -s1 test.chr10.1.fq.gz -s2 test.chr10.2.fq.gz -v GM12878 -r hg19.fa -gtf Homo_sapiens.Ensembl.GRCh37.75.gtf -e Human_AG_all_hg19_v2.txt -readlength 100 -gz
+    python PAIRADISE.py -o OUTPUT/ -s test.chr10.1.fq.gz,test.chr10.2.fq.gz -v GM12878,GM12878 -r hg19.fa -gtf Homo_sapiens.Ensembl.GRCh37.75.gtf -e Human_AG_all_hg19_v2.txt -readlength 100 -gz
 
 ## Usage
 
