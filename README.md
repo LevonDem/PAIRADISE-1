@@ -4,7 +4,7 @@
 R version 3.2.1 or higher.
 
 ### Installation
-Install the PAIRADISE .tar files then type the command ```install.packages("path_to_file/PAIRADISE", repos = NULL, type = "source")``` within R.
+Install the PAIRADISE .tar files then type the command ```install.packages("path_to_file/PAIRADISE_1.0.tar.gz", repos = NULL, type = "source")``` within R.
 
 ### Usage:
 ``` pairadise(my.data, numCluster, sig.level, nIter, tol, pseudocount, equal.variance) ```
