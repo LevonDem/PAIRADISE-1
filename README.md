@@ -33,7 +33,7 @@ Test exmaples of the input files are availalbe at TestExample.tar.gz
 
 ## Test PAIRADISE:
 
-Download and unzip the PAIRADISE test dataset and annotation files (TestExample.tar.gz).
+Download and unzip the PAIRADISE test dataset and annotation files: http://www.mimg.ucla.edu/faculty/xing/PAIRADISE/TestExample.tar.gz
 
     tar xvfz TestExample.tar.gz
     python PAIRADISE.py -o TEST_chr20 -v TestExample/20.vcf.gz -r TestExample/chr20.hg19.fa -e Human_AG_all_hg19_v2.txt -gtf Homo_sapiens.Ensembl.GRCh37.75.gtf -s TestExample/chr20.test.1.fastq.gz,TestExample/chr20.test.2.fastq.gz -gz
