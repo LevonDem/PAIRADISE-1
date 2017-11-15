@@ -20,18 +20,23 @@ Download PAIRADISE from github:
 Install the PAIRADISE statistical model in R from local repository:
 	install.packages('PAIRADISE_1.0.tar.gz', repos = NULL)
 
-## Annotation Files (Yang, please add the official download link to these)
+## Input files
+Test exmaples of the input files are availalbe at TestExample.tar.gz
+- RNA-seq Data (Example: chr20.test.1.fastq.gz,chr20.test.2.fastq.gz)
+- VCF Genotype Files (Example: 20.vcf.gz)
 
-- hg19 reference genome (link)
-- Ensemble GRCh37 v75 GTF file (link)
-- RADAR known RNA editing sites v2 (link)
+## Annotation Files
+
+- hg19 reference genome: http://hgdownload.cse.ucsc.edu/downloads.html#human
+- Ensemble GRCh37 v75 GTF file: ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/
+- RADAR known RNA editing sites v2: http://lilab.stanford.edu/GokulR/database/Human_AG_all_hg19_v2.txt
 
 ## Test PAIRADISE:
 
-Download and unzip the PAIRADISE test dataset. (Yang, please upload the test data files onto our MIMG server. Talk with Zhijie if you are not sure about how to upload.)
+Download and unzip the PAIRADISE test dataset and annotation files (TestExample.tar.gz).
 
-    tar xvfz GM12878.tar.gz
-    python PAIRADISE.py -o OUTPUT/ -s test.chr10.1.fq.gz,test.chr10.2.fq.gz -v GM12878,GM12878 -r hg19.fa -gtf Homo_sapiens.Ensembl.GRCh37.75.gtf -e Human_AG_all_hg19_v2.txt -readlength 100 -gz
+    tar xvfz TestExample.tar.gz
+    python PAIRADISE.py -o TEST_chr20 -v TestExample/20.vcf.gz -r TestExample/chr20.hg19.fa -e Human_AG_all_hg19_v2.txt -gtf Homo_sapiens.Ensembl.GRCh37.75.gtf -s TestExample/chr20.test.1.fastq.gz,TestExample/chr20.test.2.fastq.gz -gz
 
 ## Usage
 
