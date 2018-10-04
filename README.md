@@ -94,11 +94,9 @@ PAIRADISE can be used as a stand-alone statistical model in R by downloading the
 
 The primary function of the PAIRADISE R package, ```pairadise```, is called as follows:
 
-``` pairadise(my.data, numCluster, sig.level, nIter, tol, pseudocount, equal.variance) ```
+``` pairadise(my.data) ```
 
-The input format for the dataframe required by PAIRADISE should be as follows:
-
-Each row of the dataframe corresponds to a different alternative splicing event. The dataframe should have 7 columns, arranged as follows: 
+Each row of the dataframe ```my.data``` corresponds to a different alternative splicing event. ```my.data``` should have 7 columns, arranged as follows: 
 
 1. Column 1 contains the ID of the alternative splicing events. 
 2. Column 2 contains counts of isoform 1 corresponding to the first group.
@@ -110,7 +108,7 @@ Each row of the dataframe corresponds to a different alternative splicing event.
 
 Replicates in columns 2-5 should be separated by commas, e.g. "1623,432,6" for three replicates and the replicate order should be consistent for each column to ensure pairs are matched correctly. 
 
-Other (optional) inputs to pairadise include:
+Other (optional) inputs to ```pairadise``` include:
 
 1. numCluster: Number of clusters to use for parallel computing. Default is ```numCluster = 2```.
 2. sig.level: The desired level of statistical significance. Default is ```sig.level = 0.01```.
@@ -121,7 +119,7 @@ Other (optional) inputs to pairadise include:
 7. equal.variance: Are the group variances assumed equal? Takes value TRUE or FALSE. Default is ```equal.variance = FALSE```.
 
 Output:
-The function "pairadise" returns a list containing the following entries:
+The function ```pairadise``` returns a list containing the following entries:
 
 
 1. sig.results.Bonferroni: Matrix containing the significant exons (after Bonferroni correction at sig.level), their p-values, and test-statistics.
