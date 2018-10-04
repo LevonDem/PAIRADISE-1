@@ -106,7 +106,9 @@ Each row of the dataframe ```my.data``` corresponds to a different alternative s
 6. Column 6 contains the effective length of isoform 1.
 7. Column 7 contains the effective length of isoform 2.
 
-Replicates in columns 2-5 should be separated by commas, e.g. "1623,432,6" for three replicates and the replicate order should be consistent for each column to ensure pairs are matched correctly. 
+Replicates in columns 2-5 should be separated by commas, e.g. "1623,432,6" for three replicates and the replicate order should be consistent for each column to ensure pairs are matched correctly. The PAIRADISE R package includes a sample dataset satisfying the formatting requirements mentioned above; this dataset can be accessed using the command
+
+``data("sample_dataset")``
 
 Other (optional) inputs to ```pairadise``` include:
 
