@@ -88,6 +88,12 @@ All output files are in outputFolder:
 - fromGTF.AS_Event.txt: all possible alternative splicing (AS) events derived from GTF and RNA.
 
 ## Use the Stand-Alone PAIRADISE Statistical Model in R:
+PAIRADISE can be used as a stand-alone statistical model in R by downloading the and installing the file 'PAIRADISE_RPackage_1.0.tar.gz'. The following command will install the package within R:
+
+```install.packages('PAIRADISE_RPackage_1.0.tar.gz', repos = NULL, type = 'source') ```
+
+The primary function of the PAIRADISE R package, ```pairadise```, is called as follows:
+
 ``` pairadise(my.data, numCluster, sig.level, nIter, tol, pseudocount, equal.variance) ```
 
 The input format for the dataframe required by PAIRADISE should be as follows:
