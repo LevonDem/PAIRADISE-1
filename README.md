@@ -1,8 +1,8 @@
-# PAIRADISE: Paired Analysis of Allelic Differential Splicing Events
+# PAIRADISE: Detecting allele-specific alternative splicing from population-scale RNA-seq data
 
 ## About
 
-PAIRADISE is a statistical model and computational approach to detect allele specific alternative splicing events from RNA-Seq and genotyping data. The PAIRADISE statistical model calculates the P-value and false discovery rate of the significance level that two alleles differ in alternative splicing.
+We introduce PAIRADISE (PAIred Replicate analysis of Allelic DIfferential Splicing Events), a method for detecting allele-specific alternative splicing (ASAS) from RNA-seq data. PAIRADISE uses a statistical model that aggregates ASAS signals across multiple individuals in a population. It formulates ASAS detection as a statistical problem for identifying differential alternative splicing from RNA-seq data with paired replicates. The PAIRADISE statistical model is applicable to many forms of allele-specific isoform variation (e.g. RNA editing), and can be used as a generic statistical model for RNA-seq studies involving paired replicates.
 
 ## Installation
 
