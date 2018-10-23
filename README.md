@@ -21,7 +21,7 @@ Install the PAIRADISE statistical model in R from local repository:
 	install.packages('PAIRADISE_1.0.tar.gz', repos = NULL)
 
 ## Input files
-Test exmaples of the input files are availalbe at TestExample.tar.gz
+Test examples of the input files are available at TestExample.tar.gz
 - RNA-seq Data (Example: chr20.test.1.fastq.gz,chr20.test.2.fastq.gz)
 - VCF Genotype Files (Example: 20.vcf.gz)
 
